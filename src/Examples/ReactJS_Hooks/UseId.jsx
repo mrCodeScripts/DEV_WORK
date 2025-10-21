@@ -18,7 +18,6 @@ function UseIdExample1 () {
 
 function Tabs({ tabs }) {
   const id = useId();
-
   return (
     <div>
       <ul role="tablist">
