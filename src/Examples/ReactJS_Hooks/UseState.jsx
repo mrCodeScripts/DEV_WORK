@@ -1,4 +1,27 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+function UseStateExample () {
+  const prevState = useRef(null);
+  const [count, newCount] = useState(0);
+  useEffect(() => {
+    console.log("Count set", count);
+    console.log("Previous state: ", prevState.current);
+    return () => console.log("Component unmounted!");
+  }, [count]);
+
+  const act = () => {
+    newCount(prev => {
+      prevState.current = prev;
+      return prev + 1;
+    });
+  };
+
+  return (
+    <>
+      <button type="button" className="p-2 m-2 bg-green-300" onClick={act}>Click Me!  {count}</button>
+    </>
+  )
+}
 
 function InputStateExample () {
   const [input, newInput] = useState('');
@@ -51,7 +74,8 @@ function CountStateExample () {
 export function TryUseState () {
   return (
     <>
-      <InputStateExample />
+      {/* <InputStateExample /> */}
+      <UseStateExample />
     </>
   )
 }

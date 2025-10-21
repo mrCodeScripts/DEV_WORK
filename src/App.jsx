@@ -47,7 +47,9 @@ export default function App() {
       {/* <TryForwardRef /> */}
       {/* <TryImperativeHandle /> */}
       {/* <TryUseLayoutEffect /> */}
-      <TryUsedID />
+      {/* <TryUsedID /> */}
+      
+      <TryUseState />
     </>
   );
 }
