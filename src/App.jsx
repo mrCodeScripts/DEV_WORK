@@ -21,6 +21,7 @@ import TryForwardRef from "./Examples/ReactJS_Hooks/ForwardRef";
 import TryImperativeHandle from "./Examples/ReactJS_Hooks/UseImperativeHandle";
 import TryUseLayoutEffect from "./Examples/ReactJS_Hooks/UseLayoutEffect";
 import TryUsedID from "./Examples/ReactJS_Hooks/UseId";
+import TryUseTransition from "./Examples/ReactJS_Hooks/UseTransition";
 
 export default function App() {
   return (
@@ -48,7 +49,8 @@ export default function App() {
       {/* <TryImperativeHandle /> */}
       {/* <TryUseLayoutEffect /> */}
       {/* <TryUsedID /> */}
-      <TryUseState />
+      {/* <TryUseState /> */}
+      <TryUseTransition />
     </>
   );
 }
