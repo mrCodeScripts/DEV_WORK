@@ -1,21 +1,25 @@
 import { useDeferredValue, useEffect, useState } from "react"
 
-function UseDefferedValueExample1 () {
+function UseDeferredValueExample1 () {
   const [query, setQuery] = useState("");
+  const [hasQuery, setHasQuery] = useState(false);
   const [job, setJob] = useState(false);
   const [loading, setLoading] = useState(false);
   const defferedValue = useDeferredValue(query);
 
   const inputAction = (e) => {
-    if (!loading) setLoading(true);
-    if (job) setJob(false);
+    setLoading(true);
+    setJob(false);
     setQuery(e.target.value);
+
+    setTimeout(() => {}, 0);
   };
 
+  useEffect(() => {query == "" ? setHasQuery(false) : setHasQuery(true)}, [query]);
+
   useEffect(() => {
-    // simulate server fetching
     const slowProcess = async () => {
-      await new Promise(res => setTimeout(res, 9000));
+      await new Promise(res => setTimeout(res, 3000));
       if (loading) setLoading(false);
       if (!job)  setJob(true);
     };
@@ -33,10 +37,10 @@ function UseDefferedValueExample1 () {
       />
       {
         loading && job ? <p
-          className="text-red-400 font-bold"
+          className="px-5 m-3 text-red-400 font-bold"
         >Loading...</p> : 
-        !loading && job ? <p
-          className="text-green-400 font-bold"
+        !loading && job && hasQuery ? <p
+          className="px-5 m-3 text-green-400 font-bold"
         >Done</p> : ""
       }
     </>
@@ -46,7 +50,7 @@ function UseDefferedValueExample1 () {
 export default function TryUseDeferredValue () {
   return (
     <>
-      <UseDefferedValueExample1 />
+      <UseDeferredValueExample1 />
     </>
   )
 }
