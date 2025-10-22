@@ -286,7 +286,6 @@ function Game () {
       gameLoop(gameSettings, ctx)
     });
   }, []);
-  
 
   useEffect(() => {
     const canvas = canvasRef.current;
