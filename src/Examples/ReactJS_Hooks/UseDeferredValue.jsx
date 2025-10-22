@@ -11,11 +11,13 @@ function UseDeferredValueExample1 () {
     setLoading(true);
     setJob(false);
     setQuery(e.target.value);
-
     setTimeout(() => {}, 0);
   };
 
-  useEffect(() => {query == "" ? setHasQuery(false) : setHasQuery(true)}, [query]);
+  useEffect(() => {
+    query == "" ? setHasQuery(false) : 
+    setHasQuery(true)}, 
+  [query]);
 
   useEffect(() => {
     const slowProcess = async () => {
@@ -29,7 +31,8 @@ function UseDeferredValueExample1 () {
   return (
     <>
       <input 
-        className="p-5 m-3 bg-gray-100 rounded-xl outline-none border-2
+        className="p-5 m-3 bg-gray-100 
+        rounded-xl outline-none border-2
         border-blue-300 text-gray-700 text-sm"
         type="text" 
         value={query}
