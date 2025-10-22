@@ -7,6 +7,7 @@ function FilterList({ items }) {
   const queryHandler = (e) => {
     const v = e.target.value;
     setQuery(v);
+    
     startTransition(async () => {
       const filter = items.filter((item) =>
         item.toLowerCase().includes(v.toLowerCase())

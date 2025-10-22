@@ -51,8 +51,8 @@ export default function App() {
       {/* <TryUseLayoutEffect /> */}
       {/* <TryUsedID /> */}
       {/* <TryUseState /> */}
-      {/* <TryUseTransition /> */}
-      <TryUseDeferredValue />
+      <TryUseTransition />
+      {/* <TryUseDeferredValue /> */}
     </>
   );
 }
