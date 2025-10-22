@@ -7,7 +7,6 @@ function FilterList({ items }) {
   const queryHandler = (e) => {
     const v = e.target.value;
     setQuery(v);
-    
     startTransition(async () => {
       const filter = items.filter((item) =>
         item.toLowerCase().includes(v.toLowerCase())
@@ -42,7 +41,9 @@ export default function TryUseTransition() {
 }
 
 /*
-  useTransition() - React Hook for managing non-urgent UI updates (Concurrent Mode)
+  -> const [isPending, startTransition] = useTransition(); - React Hook for managing non-urgent UI updates (Concurrent Mode)
+  -> Recommendation: Use this not for fetching data on the server (it spamms) but for 
+  filtering local data (already fetched data)
 
   Purpose:
   - Allows you to mark certain state updates as "transitions" (non-urgent) 
