@@ -1,48 +1,43 @@
-import { useState, useTransition } from "react"
+import { useState, useTransition } from "react";
 
-function FilterList ({items}) {
+function FilterList({ items }) {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState(items);
   const [isPending, startTransition] = useTransition();
   const queryHandler = (e) => {
     const v = e.target.value;
     setQuery(v);
-
     startTransition(async () => {
-      // simulate fetching or feltering data
-      const filter = items.filter(item => item.toLowerCase().includes(v.toLowerCase()));
-      await new Promise(res => setTimeout(res, 1000));
+      const filter = items.filter((item) =>
+        item.toLowerCase().includes(v.toLowerCase())
+      );
+      await new Promise((res) => setTimeout(res, 1000));
       setFiltered(filter);
     });
   };
 
   return (
     <>
-      <input 
-        type="text" 
+      <input
+        type="text"
         className="p-2 m-2 bg-gray-100 rounded-xl text-gray-900"
-        onInput={queryHandler} 
+        onInput={queryHandler}
       />
-      <div
-        className="p-2 flex flex-col gap2"
-      >
-        {isPending ? "Pending..." : filtered.map((v, i) => <span key={i}>{v}</span>)}
+      <div className="p-2 flex flex-col gap2">
+        {isPending
+          ? "Pending..."
+          : filtered.map((v, i) => <span key={i}>{v}</span>)}
       </div>
     </>
-  )
+  );
 }
 
-export default function TryUseTransition () {
+export default function TryUseTransition() {
   return (
     <>
-      <FilterList items={[
-        "John Doe",
-        "Shit",
-        "Item",
-        "JavaScript"
-      ]} />
+      <FilterList items={["John Doe", "Shit", "Item", "JavaScript"]} />
     </>
-  )
+  );
 }
 
 /*
