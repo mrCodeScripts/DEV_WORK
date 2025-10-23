@@ -23,6 +23,7 @@ import TryUseLayoutEffect from "./Examples/ReactJS_Hooks/UseLayoutEffect";
 import TryUsedID from "./Examples/ReactJS_Hooks/UseId";
 import TryUseTransition from "./Examples/ReactJS_Hooks/UseTransition";
 import TryUseDeferredValue from "./Examples/ReactJS_Hooks/UseDeferredValue";
+import TryUseDebounce from "./Examples/ReactJS_Hooks/UseDebounce";
 
 export default function App() {
   return (
@@ -51,8 +52,9 @@ export default function App() {
       {/* <TryUseLayoutEffect /> */}
       {/* <TryUsedID /> */}
       {/* <TryUseState /> */}
-      <TryUseTransition />
+      {/* <TryUseTransition /> */}
       {/* <TryUseDeferredValue /> */}
+      <TryUseDebounce />
     </>
   );
 }
