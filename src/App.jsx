@@ -24,6 +24,7 @@ import TryUsedID from "./Examples/ReactJS_Hooks/UseId";
 import TryUseTransition from "./Examples/ReactJS_Hooks/UseTransition";
 import TryUseDeferredValue from "./Examples/ReactJS_Hooks/UseDeferredValue";
 import TryUseDebounce from "./Examples/ReactJS_Hooks/UseDebounce";
+import TryUseSyncExternalStore from "./Examples/ReactJS_Hooks/UseSyncExternalStorage";
 
 export default function App() {
   return (
@@ -48,13 +49,14 @@ export default function App() {
       {/* <TryUseRef /> */}
       {/* <SnakeGame /> */}
       {/* <TryForwardRef /> */}
-      <TryImperativeHandle />
+      {/* <TryImperativeHandle /> */}
       {/* <TryUseLayoutEffect /> */}
       {/* <TryUsedID /> */}
       {/* <TryUseState /> */}
       {/* <TryUseTransition /> */}
       {/* <TryUseDeferredValue /> */}
       {/* <TryUseDebounce /> */}
+      <TryUseSyncExternalStore />
     </>
   );
 }
