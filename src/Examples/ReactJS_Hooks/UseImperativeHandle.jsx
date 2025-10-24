@@ -132,11 +132,54 @@ function ImperativeHandleExample2 () {
   )
 }
 
+function ImperativeHandleExample3ToggleExample () {
+  const [showModal, setShowModal] = useState(false);
+  const theRef  = useRef();
+
+  const InputComponent = forwardRef((props, ref) => {
+    const inputRef = useRef(null);
+    useImperativeHandle(ref, () => ({
+        focus_input: () => inputRef.current.focus(),
+    }), [ref]);
+
+    return (
+      <>
+        <input
+          ref={inputRef}
+          className="p-3 m-3 border border-blue-200 outline-green-300 outline-2 outline-solid rounded-xl"
+        />
+      </>
+    )
+  });
+
+  const clickModal = () => {
+    showModal ? setShowModal(false) : 
+    setShowModal(true);
+  }
+
+  useEffect(() => {
+    if (showModal) theRef.current.focus_input();
+  }, [showModal]);
+
+  return (
+    <>
+      {
+        showModal ? <InputComponent ref={theRef} /> : ''
+      }
+      <div
+        className="px-5 py-3 m-3 cursor-pointer bg-green-300 text-white w-fit font-bold rounded-xl"
+        onClick={clickModal}
+      >Modal</div>
+    </>
+  )
+}
+
 export default function TryImperativeHandle () {
   return (
     <>
       {/* <ImperativeHandleExample1 /> */}
-      <ImperativeHandleExample2 />
+      {/* <ImperativeHandleExample2 /> */}
+      <ImperativeHandleExample3ToggleExample />
     </>
   )
 }

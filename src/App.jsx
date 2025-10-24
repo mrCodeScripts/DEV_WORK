@@ -48,13 +48,13 @@ export default function App() {
       {/* <TryUseRef /> */}
       {/* <SnakeGame /> */}
       {/* <TryForwardRef /> */}
-      {/* <TryImperativeHandle /> */}
+      <TryImperativeHandle />
       {/* <TryUseLayoutEffect /> */}
       {/* <TryUsedID /> */}
       {/* <TryUseState /> */}
       {/* <TryUseTransition /> */}
       {/* <TryUseDeferredValue /> */}
-      <TryUseDebounce />
+      {/* <TryUseDebounce /> */}
     </>
   );
 }
