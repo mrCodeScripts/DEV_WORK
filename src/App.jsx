@@ -37,6 +37,7 @@ export default function App() {
       <TryUseContext />
       <TaskManager />
       <TestUseReducer></TestUseReducer> */}
+      {/* <TryUseEffect /> */}
       {/* <UseMemoExample></UseMemoExample> */}
       {/* <UserApp></UserApp> */}
       {/* <TryUseActionState /> */}
@@ -56,7 +57,7 @@ export default function App() {
       {/* <TryUseTransition /> */}
       {/* <TryUseDeferredValue /> */}
       {/* <TryUseDebounce /> */}
-      <TryUseSyncExternalStore />
+      {/* <TryUseSyncExternalStore /> */}
     </>
   );
 }

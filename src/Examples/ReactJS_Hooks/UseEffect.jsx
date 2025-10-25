@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState, useSyncExternalStore, useCallback } from "react";
 
-function UseEffectOnValueChange () {
+function UseEffectOnValueChange() {
   const [count, newCount] = useState(0);
 
   useEffect(() => {
@@ -15,23 +15,79 @@ function UseEffectOnValueChange () {
       <button
         type="button"
         className="px-10 py-2 m-3 bg-green-500 rounded-xl text-white font-bold"
-        onClick={() => newCount(prev => prev += 1)}
+        onClick={() => newCount((prev) => (prev += 1))}
       >
         Click This!
       </button>
-      <span>
-        {count}
-      </span>
+      <span>{count}</span>
     </>
-  )
+  );
 }
 
-export function TryUseEffect () {
+
+function useMousePoints() {
+  const pointRef = useRef({ x: 0, y: 0 });
+
+  const subscribe = useCallback((cb) => {
+    const pointHandle = (e) => {
+      pointRef.current = { x: e.clientX, y: e.clientY };
+      cb();
+    };
+    document.addEventListener("mousemove", pointHandle);
+    return () => document.removeEventListener("mousemove", pointHandle);
+  }, []);
+
+  const getSnapshot = useCallback(() => pointRef.current, []);
+  return useSyncExternalStore(subscribe, getSnapshot);
+}
+
+function UseEffectExample2() {
+  const ball = useRef();
+  const ballPosition = useRef({ x: 0, y: 0 });
+  const { x, y } = useMousePoints();
+
+  useEffect(() => {
+    const smoothingFactor = 0.01;
+
+    const animate = () => {
+      // Get current mouse position
+      const targetX = x;
+      const targetY = y;
+
+      // Interpolate the ball position towards mouse
+      ballPosition.current.x += (targetX - ballPosition.current.x) * smoothingFactor;
+      ballPosition.current.y += (targetY - ballPosition.current.y) * smoothingFactor;
+
+      // Apply the transform
+      if (ball.current) {
+        ball.current.style.transform = `translate(${ballPosition.current.x}px, ${ballPosition.current.y}px)`;
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, [x, y]); // Only restart animation when coordinates update
+
+  return (
+    <div
+      ref={ball}
+      className="w-[20px] h-[20px] absolute bg-green-400 rounded-full"
+      style={{
+        transition: "transform 0.05s ease-out",
+        willChange: "transform, top, left",
+      }}
+    ></div>
+  );
+}
+
+export function TryUseEffect() {
   return (
     <>
       <UseEffectOnValueChange />
+      <UseEffectExample2 />
     </>
-  )
+  );
 }
 
 /*
@@ -121,4 +177,3 @@ useEffect(() => {
 -------------------------------------------------------------
 
  */
- 
