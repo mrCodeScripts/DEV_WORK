@@ -185,4 +185,57 @@ export default function TryUseDebounce () {
  * You don’t just “use” debounce now.
  * You *own* it.
  * ------------------------------------------------------------
+ * 
+ * ================================================
+ * React Hooks Summary (Comparison): Debounce, DeferredValue, Transition
+ * ================================================
+ *
+ * 1. useDebounce (custom hook)
+ * --------------------------------
+ * - Concept: Delays the execution of a function until after a specified idle time.
+ * - Usage:
+ *   • Prevents spamming API calls or server requests (e.g., search bars).
+ *   • Limits execution of high-frequency events (scroll, resize, mousemove).
+ *   • Reduces heavy computation triggered by user input or rapid events.
+ *   • Provides precise time-based control for actions.
+ * - Mechanics:
+ *   • Stores a timer (usually via useRef to persist across renders without causing re-renders).
+ *   • Clears existing timer on each call, resets it to execute function after delay.
+ * - Limitations:
+ *   • Not scheduler-aware; heavy UI work may still cause jank.
+ *   • No built-in isPending/loading state; must implement manually.
+ *   • Execution purely time-based, not priority-based.
+ * - Recommendation: Use when controlling the frequency of function calls or server requests.
+ *
+ * --------------------------------
+ * 2. useDeferredValue (React built-in)
+ * --------------------------------
+ * - Concept: Returns a “deferred” version of a value that React will update **after more urgent UI updates**.
+ * - Usage:
+ *   • Smooths UI by letting expensive operations lag behind urgent ones (typing, animations).
+ *   • Prevents intermediate states from blocking rendering.
+ * - Mechanics:
+ *   • React updates the deferred value after all higher-priority updates finish.
+ *   • Ideal for search input, filtering large lists, or heavy computations.
+ * - Limitations:
+ *   • No exact timing; value updates as React schedules idle time.
+ *   • Must manually manage loading indicators if needed.
+ *
+ * --------------------------------
+ * 3. useTransition (React built-in)
+ * --------------------------------
+ * - Concept: Lets you mark state updates as low-priority and tracks their pending status.
+ * - Usage:
+ *   • Wrapping expensive UI updates to prevent input blocking.
+ *   • Provides `isPending` to show loading spinners automatically.
+ * - Mechanics:
+ *   • `startTransition` wraps the state update callback.
+ *   • React handles scheduling: urgent updates (input) vs low-priority updates (filtered results, animations).
+ * - Limitations:
+ *   • Triggers every wrapped update; must be combined with memoization (React.memo) to avoid unnecessary re-renders.
+ *
+ * --------------------------------
+ * Key Differences / Recommendations:
+ * - useDebounce: Time-based delay; precise control over function execution frequency.
+ * - useDeferredValue: Value-based delay; Re*
  */

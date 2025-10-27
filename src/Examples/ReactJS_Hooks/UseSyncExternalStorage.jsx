@@ -132,3 +132,73 @@ export default function TryUseSyncExternalStore() {
     </>
   );
 }
+
+/**
+ * useSyncExternalStore Hook - Full Summary
+ *
+ * SYNTAX / STRUCTURE:
+ * 
+ * const value = useSyncExternalStore(
+ *   subscribe,       // function: (callback) => cleanup function
+ *   getSnapshot,     // function: () => current value from store
+ *   getServerSnapshot // optional function: () => value for SSR
+ * );
+ *
+ * Example:
+ * const width = useSyncExternalStore(
+ *   (cb) => {
+ *     window.addEventListener("resize", cb);
+ *     return () => window.removeEventListener("resize", cb);
+ *   },
+ *   () => window.innerWidth
+ * );
+ *
+ * WHAT IT IS:
+ * - A React hook introduced to safely subscribe to external (or internal) stores 
+ *   while preventing inconsistent UI states, known as "tearing."
+ * - Ensures that your component always renders with consistent values, even 
+ *   during concurrent rendering or multiple React roots.
+ *
+ * PRIMARY USE CASE:
+ * - Reading external data sources like:
+ *    - Window properties (scroll, size)
+ *    - Mouse positions
+ *    - Global state stores (Redux, Zustand, custom stores)
+ * - Avoids subtle bugs that can occur when using useState/useEffect for external subscriptions.
+ *
+ * HOW IT WORKS:
+ * - subscribe(callback) is called by React; callback triggers re-render.
+ * - getSnapshot() returns the current value from the store or source.
+ * - getServerSnapshot() is optional for SSR.
+ * - React re-renders if the value returned by getSnapshot() changes.
+ *
+ * IMPORTANT MECHANICS & PITFALLS:
+ * - getSnapshot returns a value that is compared by reference.
+ *   - Returning objects or arrays causes re-renders every time (different reference).
+ *   - Fix: memoize return values or split into separate hooks per value.
+ * - Functions are first-class objects; can be returned safely if memoized.
+ * - Subscription callback (cb) only triggers re-render, does not carry data.
+ * - Always clean up event listeners in the subscribe function to avoid memory leaks.
+ *
+ * BEST PRACTICES:
+ * - Use useCallback to memoize subscription and snapshot functions if they depend on other variables.
+ * - Avoid returning new objects or arrays on every snapshot call; memoize if needed.
+ * - Use multiple hooks for multiple related values to avoid unnecessary re-renders.
+ * - Ideal for consistent, reactive subscriptions to any external data source in a concurrent-safe way.
+ *
+ * REAL-LIFE EXAMPLES:
+ * - Window resize:
+ *     const width = useSyncExternalStore(subscribeToResize, () => window.innerWidth);
+ * - Scroll position:
+ *     const scrollY = useSyncExternalStore(subscribeToScroll, () => window.scrollY);
+ * - Mouse position:
+ *     const {x, y} = useSyncExternalStore(subscribeToMouseMove, () => ({x: e.clientX, y: e.clientY}));
+ * - Any custom store (like Redux or Zustand) to safely subscribe to data changes.
+ *
+ * SUMMARY OF DISCUSSION:
+ * - Designed to prevent tearing and inconsistent state.
+ * - Compare by reference vs value is crucial.
+ * - Subscription callback triggers re-render; getSnapshot returns the data.
+ * - Can replace some useEffect/useState patterns for external subscriptions.
+ * - Use memoization when needed (useCallback, useMemo) to prevent unnecessary re-renders.
+ */
