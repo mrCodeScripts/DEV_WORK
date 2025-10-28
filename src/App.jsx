@@ -26,6 +26,7 @@ import TryUseDeferredValue from "./Examples/ReactJS_Hooks/UseDeferredValue";
 import TryUseDebounce from "./Examples/ReactJS_Hooks/UseDebounce";
 import TryUseSyncExternalStore from "./Examples/ReactJS_Hooks/UseSyncExternalStorage";
 import { useRef, useSyncExternalStore } from "react";
+import TryUseInsertionEffect from "./Examples/ReactJS_Hooks/UseInsertionEffect";
 
 export default function App() {
   return (
@@ -59,6 +60,7 @@ export default function App() {
       {/* <TryUseDeferredValue /> */}
       {/* <TryUseDebounce /> */}
       {/* <TryUseSyncExternalStore /> */}
+      <TryUseInsertionEffect />
     </>
   );
 }
