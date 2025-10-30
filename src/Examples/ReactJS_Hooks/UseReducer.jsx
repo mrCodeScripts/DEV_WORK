@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useActionState, useId, useRef } from "react";
 
 // SIMPLE USEREDUCER FUNCTION
 
@@ -77,7 +77,7 @@ function reducer(state, action) {
       return {
         ...state,
         tasks: state.tasks.map((t) =>
-          t.id === action.payload ? { ...t, completed: !t.completed } : t,
+          t.id === action.payload ? { ...t, completed: !t.completed } : t
         ),
       };
 
@@ -106,7 +106,7 @@ const initialState = {
 };
 
 // 4. Component using useReducer
-export function TaskManager() {
+function TaskManager() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Fake async fetch
@@ -198,6 +198,208 @@ export function TaskManager() {
         </button>
       )}
     </div>
+  );
+}
+
+function UseReducerExample3() {
+  const chosenColor = useRef(0);
+  const nameId = useId();
+  const ageId = useId();
+
+  const dispatchType = {
+    ADD_USER: "add_user",
+    DEL_USER: "delete_user",
+  };
+
+  const formState = {
+    _NEUTRAL: {
+      msg: "",
+      show: false,
+    },
+    _ERR_NO_INPUT: {
+      msg: "Invalid Input: No data!",
+      show: true,
+    },
+    _SUCCESS_ADD: {
+      msg: "Successfully added user!",
+      show: true,
+    },
+    _SUCCESS_DEL: {
+      msg: "Successfully deleted user!",
+      show: true,
+    },
+  };
+
+  const colors = [
+    "red",
+    "green",
+    "blue",
+    "pink",
+    "purple",
+    "indigo",
+    "orange",
+    "yellow",
+    "gray",
+  ];
+
+  const colorClasses = {
+    red: "border-red-300",
+    green: "border-green-300",
+    blue: "border-blue-300",
+    pink: "border-pink-300",
+    purple: "border-purple-300",
+    indigo: "border-indigo-300",
+    orange: "border-orange-300",
+    yellow: "border-yellow-300",
+    gray: "border-gray-300",
+  };
+
+  const [usersState, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case dispatchType.ADD_USER:
+          return [action.payload, ...state];
+        case dispatchType.DEL_USER:
+          return state.filter((v, i) => i !== Number(action.payload.id));
+        default:
+          return state;
+      }
+    },
+    [
+      { name: "Jane Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+      { name: "John Doe", age: 19 },
+    ]
+  );
+
+  const [state, addUserAction, isLoading] = useActionState(
+    async (state, formData) => {
+      await new Promise((res) => setTimeout(res, 5000));
+      const name = formData.get("name") ?? null;
+      const age = formData.get("age") ?? null;
+      if (!name || !age) return formState._ERR_NO_INPUT;
+      dispatch({
+        type: dispatchType.ADD_USER,
+        payload: {
+          name: name,
+          age: age,
+        },
+      });
+      return formState._SUCCESS_ADD;
+    },
+    formState._NEUTRAL,
+    "/formsubmit/tasks/addUser"
+  );
+
+  const [st, deleteUser, loading] = useActionState(
+    async (state, formData) => {
+      await new Promise((res) => setTimeout(res, 5000));
+      const id = formData.get("user_id") ?? null;
+      if (!id) return formState._ERR_NO_INPUT;
+      dispatch({
+        type: dispatchType.DEL_USER,
+        payload: { id: id },
+      });
+      return formState._SUCCESS_DEL;
+    },
+    formState._NEUTRAL,
+    "/formsubmit/tasks/addUser"
+  );
+
+  return (
+    <>
+      <form
+        className="flex flex-col bg-gray-200 p-3 m-3 rounded-xl gap-2"
+        action={addUserAction}
+      >
+        <input
+          type="text"
+          name="name"
+          id={`task_input_${nameId}`}
+          className="bg-gray-100 rounded-md border-2 border-indigo-300 outline-none focus:outline-indigo-100 px-3 py-2"
+          placeholder="Name"
+        />
+        <input
+          type="number"
+          defaultValue={18}
+          name="age"
+          className="bg-gray-100 rounded-md border-2 border-indigo-300 outline-none focus:outline-indigo-100 px-3 py-2"
+          placeholder="Age"
+          id={`tas_input_${ageId}`}
+        />
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="p-3 bg-green-500 hover:bg-green-300 transition-all duration-300 text-md font-bold text-white rounded-xl disabled:bg-green-200"
+        >
+          Add User
+        </button>
+      </form>
+      {usersState.length === 0 ? (
+        <p className="p-3 m-3 text-red-300 font-bold">NO USERS</p>
+      ) : (
+        chosenColor.current = 0;
+        usersState.map((v, i) => {
+          const color = colors[chosenColor.current];
+          const colorClass = colorClasses[color];
+          chosenColor.current = (chosenColor.current + 1) % colors.length;
+          console.log(color);
+          return (
+            <div
+              key={i}
+              className={`pl-10 pr-3 border-l-[3px] ${colorClass} py-3 m-3 flex flex-row bg-gray-100
+              rounded-xl`}
+            >
+              <div className="flex flex-col gap-1">
+                <p>Name: {v.name}</p>
+                <p>Age: {v.age}</p>
+              </div>
+              <div className="ml-auto">
+                <form action={deleteUser}>
+                  <input type="hidden" name="user_id" value={i} />
+                  <button
+                    type="submit"
+                    className="hover:bg-gray-300 p-1 rounded-full"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#434343"
+                    >
+                      <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </div>
+          );
+        })
+      )}
+    </>
+  );
+}
+
+export function TryUseReducer() {
+  return (
+    <>
+      {/* <TestUseReducer /> */}
+      {/* <TaskManager /> */}
+      <UseReducerExample3 />
+    </>
   );
 }
 
