@@ -1,4 +1,4 @@
-import { useActionState, useReducer } from "react";
+import { useActionState, useReducer, useTransition } from "react";
 
 function performWhenFormSubmitted (prevState, formData) {
   console.log(formData);
@@ -84,11 +84,40 @@ function UseActionStateLoading () {
   )
 }
 
+function UseActionStateExample4 () {
+  const [state, actionState, isLoading] = useActionState(async (state, formData) => {
+    const name = formData.get("button_name") ?? null;
+    return name;
+  }, "", "/useActionStateExample4");
+
+  const [loading, startTransition] = useTransition();
+
+  const handler = (i) => {
+    const formData = new FormData();
+    formData.append("button_name", `BUTTON ${i}`);
+    startTransition(() => {
+      actionState(formData);
+    });
+  };
+
+  const btns = [ "Button", "Button", "Button", "Button", "Button" ];
+
+  return (
+    <>
+      <p>Button Name: {state ?? <span className="text-red-300">No Button Clicked</span>}</p>
+      {
+        btns.map((v, i) => <button key={i} onClick={(i) => {handler(i)}}>{v} {i}</button>)
+      }
+    </>
+  )
+}
+
 export function TryUseActionState () {
   return (
     <>
-      <UseActionStateLoading />
+      {/* <UseActionStateLoading /> */}
       {/* <UseActionStateFormExample /> */}
+      <UseActionStateExample4 />
     </>
   )
 }

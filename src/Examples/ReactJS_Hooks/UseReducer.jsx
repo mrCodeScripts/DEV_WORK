@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useActionState, useId, useRef } from "react";
+import { useReducer, useEffect, useActionState, useId, useRef, useTransition } from "react";
 
 // SIMPLE USEREDUCER FUNCTION
 
@@ -16,7 +16,6 @@ function useReducerDispatcher(state, action) {
 export function TestUseReducer() {
   const initialState = 0;
   const [state, dispatch] = useReducer(useReducerDispatcher, initialState);
-
   return (
     <>
       <p className="text-xl font-bold text-center">{state}</p>
@@ -284,7 +283,7 @@ function UseReducerExample3() {
     ]
   );
 
-  const [state, addUserAction, isLoading] = useActionState(
+  const [addUserState, addUserAction, addIsLoading] = useActionState(
     async (state, formData) => {
       await new Promise((res) => setTimeout(res, 5000));
       const name = formData.get("name") ?? null;
@@ -303,7 +302,7 @@ function UseReducerExample3() {
     "/formsubmit/tasks/addUser"
   );
 
-  const [st, deleteUser, loading] = useActionState(
+  const [delUserState, delUserAction, delIsLoading] = useActionState(
     async (state, formData) => {
       await new Promise((res) => setTimeout(res, 5000));
       const id = formData.get("user_id") ?? null;
@@ -315,8 +314,19 @@ function UseReducerExample3() {
       return formState._SUCCESS_DEL;
     },
     formState._NEUTRAL,
-    "/formsubmit/tasks/addUser"
+    "/formsubmit/tasks/delUser"
   );
+
+  const [loading, startTransition] = useTransition();
+
+  const userDeleteHandler = (i) => {
+    console.log(i);
+    const formData = new FormData();
+    formData.append("user_id", i);
+    startTransition(() => {
+      delUserAction(formData);
+    });
+  };
 
   return (
     <>
@@ -341,21 +351,19 @@ function UseReducerExample3() {
         />
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={addIsLoading}
           className="p-3 bg-green-500 hover:bg-green-300 transition-all duration-300 text-md font-bold text-white rounded-xl disabled:bg-green-200"
         >
-          Add User
+          {addIsLoading ? "Loading..." : "Add User"}
         </button>
       </form>
       {usersState.length === 0 ? (
         <p className="p-3 m-3 text-red-300 font-bold">NO USERS</p>
       ) : (
-        chosenColor.current = 0;
         usersState.map((v, i) => {
           const color = colors[chosenColor.current];
           const colorClass = colorClasses[color];
           chosenColor.current = (chosenColor.current + 1) % colors.length;
-          console.log(color);
           return (
             <div
               key={i}
@@ -367,11 +375,12 @@ function UseReducerExample3() {
                 <p>Age: {v.age}</p>
               </div>
               <div className="ml-auto">
-                <form action={deleteUser}>
-                  <input type="hidden" name="user_id" value={i} />
+                {/* <form action={deleteUser}> */}
+                  {/* <input type="hidden" name="user_id" value={i} /> */}
                   <button
                     type="submit"
                     className="hover:bg-gray-300 p-1 rounded-full"
+                    onClick={() => {userDeleteHandler(i)}}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -383,7 +392,7 @@ function UseReducerExample3() {
                       <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
                     </svg>
                   </button>
-                </form>
+                {/* </form> */}
               </div>
             </div>
           );
