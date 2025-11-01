@@ -6,13 +6,13 @@ import { TryUseContext } from "./Examples/ReactJS_Hooks/UseContext_CreateContext
 import TryUseMemo from "./Examples/ReactJS_Hooks/UseMemo";
 import UserApp from "./Examples/ReactJS_Hooks/Lazy";
 import { TryUseActionState } from "./Examples/ReactJS_Hooks/UseActionState";
-import { TheCart } from "./Examples/ReactJS_Hooks/addToCartComponent/addtoCart";
+import { TheCart } from "./components/addToCartComponent/addtoCart";
 import TryReactMemo from "./Examples/ReactJS_Hooks/ReactMemo";
-import TryTaskManager from "./Examples/ReactJS_Hooks/taskManagerComponent/taskManagerApp";
+import TryTaskManager from "./components/taskManagerComponent/taskManagerApp";
 import TryUseOptimistic from "./Examples/ReactJS_Hooks/UseOptimistic";
 import TryUseCallback from "./Examples/ReactJS_Hooks/UseCallback";
 import TryUseRef from "./Examples/ReactJS_Hooks/UseRef";
-import SnakeGame from "./Examples/ReactJS_Hooks/snakeGameComponent/snakeGame";
+import SnakeGame from "./components/snakeGameComponent/snakeGame";
 import TryForwardRef from "./Examples/ReactJS_Hooks/ForwardRef";
 import TryImperativeHandle from "./Examples/ReactJS_Hooks/UseImperativeHandle";
 import TryUseLayoutEffect from "./Examples/ReactJS_Hooks/UseLayoutEffect";
@@ -58,7 +58,7 @@ export default function App() {
       {/* <TryUseDebounce /> */}
       {/* <TryUseSyncExternalStore /> */}
       {/* <TryUseInsertionEffect /> */}
-      <TryUseReducer />
+      {/* <TryUseReducer /> */}
     </>
   );
 }
